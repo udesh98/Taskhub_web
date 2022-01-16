@@ -2,11 +2,11 @@
 
 session_start();
 require_once ROOT  . '/View.php';
-require_once ROOT . '/model/HelpRequestModel.php';
-require_once ROOT . '/model/ComplaintModel.php';
-require_once ROOT . '/model/CustomerModel.php';
-require_once ROOT . '/model/BookingModel.php';
-require_once ROOT . '/model/CustomerProfileModel.php';
+require_once ROOT . '/models/HelpRequestModel.php';
+require_once ROOT . '/models/ComplaintModel.php';
+require_once ROOT . '/models/CustomerModel.php';
+require_once ROOT . '/models/BookingModel.php';
+require_once ROOT . '/models/CustomerProfileModel.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -81,10 +81,6 @@ class CustomerController {
     $view = new View("Customer/customer_viewad");
   }
 
-  public function customerViewmyad(){
-    $view = new View("Customer/customer_viewmyad");
-  }
-
   public function customerPayment(){
     $view = new View("Customer/customer_payment");
   }
@@ -105,8 +101,6 @@ class CustomerController {
 
     $view = new View("Customer/customer_profileEd",$data);
 
-     
-       
   } 
   
   public function customerProfileEdUp(){
@@ -177,6 +171,32 @@ class CustomerController {
   }
 
 
+  public function customerViewmyad(){
+    $customerModel = new CustomerModel();
+    $userID = $_SESSION['loggedin']['user_id'];
+    $customerDetails = $customerModel->getCustomerByUserID($userID);
+    $data['ad_details'] = $customerModel->getMyAdByCustomerID($customerDetails->CustomerID);
+    $view = new View("Customer/customer_viewmyad",$data);
+  }
+
+
+
+  //newly added
+  public function customerDeletemyad(){
+    $customerModel = new CustomerModel();
+    $userID = $_SESSION['loggedin']['user_id'];
+    $customerDetails = $customerModel->getCustomerByUserID($userID);
+
+    if(isset($_POST['submit'])) {
+      $adIDNo = $_POST['submit'];
+    }
+    $data['ad_details'] = $customerModel->deleteMyAdID($adIDNo, $customerDetails->CustomerID);
+    
+    $view = new View("Customer/customer_viewmyad",$data);
+  }
+
+
+
   public function customerSearch(){
     $dataEdit = $_POST['search'];
     $search = new CustomerModel();
@@ -189,9 +209,6 @@ class CustomerController {
     else {
       die('Something went wrong dsghjgdsahjdga.');
     }
-
-
-
   }
 
 

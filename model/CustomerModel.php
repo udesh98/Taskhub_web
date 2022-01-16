@@ -129,6 +129,7 @@ class CustomerModel extends Database {
 
   }
 
+
   //post advertisement model
   public function customerPostad($customerPostad){
     $adID = $customerPostad['AdvertisementID'];
@@ -149,23 +150,75 @@ class CustomerModel extends Database {
   }
 
   public function generateCustomerAdID(){
-  $str_part = "ad";
-  $ad_id = "";
+    $str_part = "ad";
+    $ad_id = "";
 
-  while(true){
-      $num_part = rand(000,999);
-      $ad_id = $str_part.strval($num_part);
+    while(true){
+        $num_part = rand(000,999);
+        $ad_id = $str_part.strval($num_part);
 
-      $sql = "SELECT * FROM customeradvertisement WHERE AdvertisementID = '$ad_id'";
-      $query = $this->con->query($sql);
-      $query->execute();
+        $sql = "SELECT * FROM customeradvertisement WHERE AdvertisementID = '$ad_id'";
+        $query = $this->con->query($sql);
+        $query->execute();
 
-      if($query->rowCount() == 0){
-          break;
-      }
+        if($query->rowCount() == 0){
+            break;
+        }
+    }
+    return  $ad_id;
   }
-  return  $ad_id;
+
+
+  public function getMyAdByCustomerID($cuID){
+
+    $sql = "SELECT * FROM customeradvertisement WHERE CustomerID = '$cuID'";
+    $query = $this->con->query($sql);
+    $query->execute();
+    for($i=0; $i<$query->rowCount(); $i++){
+      $data[$i] = $query->fetch(PDO::FETCH_OBJ);
+    }
+    // $data = $query->fetch(PDO::FETCH_OBJ);
+
+    if($query->rowCount() == 0){
+        die('No advertisements are posted by yourself');
+    }
+    return  $data;
   }
+
+
+
+  //newly added
+  public function deleteMyAdID($adIDNo, $cuID){
+
+    $sql = "DELETE FROM customeradvertisement WHERE AdvertisementID = '$adIDNo'";
+    $query = $this->con->query($sql);
+    $err = "";
+
+    if($query->rowCount() > 0){
+        $query->execute();
+    }
+    else {
+      $err = 'No advertisements are posted by yourself';
+    }
+
+
+    $sql = "SELECT * FROM customeradvertisement WHERE CustomerID = '$cuID'";
+    $query = $this->con->query($sql);
+    $query->execute();
+    for($i=0; $i<$query->rowCount(); $i++){
+      $data[$i] = $query->fetch(PDO::FETCH_OBJ);
+    }
+    // $data = $query->fetch(PDO::FETCH_OBJ);
+
+    if($query->rowCount() == 0){
+        $err = 'No advertisements are posted by yourself';
+    }
+    $data['error'] = $err;
+
+    return  $data;
+  }
+
+
 
 
 }
