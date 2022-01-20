@@ -2,11 +2,11 @@
 
 session_start();
 require_once ROOT  . '/View.php';
-require_once ROOT . '/models/HelpRequestModel.php';
-require_once ROOT . '/models/ComplaintModel.php';
-require_once ROOT . '/models/CustomerModel.php';
-require_once ROOT . '/models/BookingModel.php';
-require_once ROOT . '/models/CustomerProfileModel.php';
+require_once ROOT . '/model/HelpRequestModel.php';
+require_once ROOT . '/model/ComplaintModel.php';
+require_once ROOT . '/model/CustomerModel.php';
+require_once ROOT . '/model/BookingModel.php';
+require_once ROOT . '/model/CustomerProfileModel.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -101,6 +101,8 @@ class CustomerController {
 
     $view = new View("Customer/customer_profileEd",$data);
 
+     
+       
   } 
   
   public function customerProfileEdUp(){
@@ -171,6 +173,7 @@ class CustomerController {
   }
 
 
+
   public function customerViewmyad(){
     $customerModel = new CustomerModel();
     $userID = $_SESSION['loggedin']['user_id'];
@@ -196,19 +199,17 @@ class CustomerController {
   }
 
 
-
   public function customerSearch(){
-    $dataEdit = $_POST['search'];
-    $search = new CustomerModel();
-
-    if (true) {
-      $data = $search->search($dataEdit);
-      $view = new View("Customer/customer_search");
-      // header('location: ' . fullURLfront . '/Customer/customer_search' . $search);
-    } 
-    else {
-      die('Something went wrong dsghjgdsahjdga.');
+    $customerModel = new CustomerModel();
+    if(isset($_POST['search']) && ($_POST['search'] != null)) {
+      $keyword = $_POST['search'];
+      $data['results'] = $customerModel->searchResults($keyword);
     }
+    else {
+      die("Type a keyword!!");
+    }
+    
+    $view = new View("Customer/customer_serviceList",$data);
   }
 
 

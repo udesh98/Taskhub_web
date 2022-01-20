@@ -28,14 +28,14 @@
   </div>
   <div class="column2">
         <div class="search-container">
-            <form action="/action_page.php">
+            <!-- <form action="/action_page.php">
                 <input type="search" placeholder="Search advertisement by title" name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
+            </form> -->
         </div>
        
-        <br><br>
-        
+        <br><br>            
+            
         <?php
             for ($i=0; $i<$arrLength; $i++) { ?>
                 <div class="subrow" id="loop">
@@ -72,7 +72,9 @@
                         <button type="submit" class="proceed" name="submit" value="<?php echo $ad[$i]->AdvertisementID; ?>" style="color: black;">Delete Ad</button></form>
                     </div>
                 </div>
+
             <?php } ?>
+
    </div>
 </div>
 <br>
