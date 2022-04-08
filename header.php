@@ -24,6 +24,6 @@
                 <a href="<?php echo fullURLfront; ?>/auth/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
             </div>
         </div>
-        <?php } ?>        
+        <?php } ?>  
     </div>
 </div>

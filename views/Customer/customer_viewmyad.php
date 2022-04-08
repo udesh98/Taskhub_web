@@ -1,6 +1,6 @@
 <?php
     session_start();
-    
+
     $ad = $data['ad_details'];
     $arrLength = count($ad);
     $err = $ad['error'];
@@ -49,21 +49,20 @@
             </form> -->
         </div>
        
-        <br><br>            
-            
+        <br><br>      
         <?php
             if($err){ ?>
                 <center><div style="position: relative; right: 80px; top: 140px;"><h1><?php echo($err); ?></h1>
                 <img src="<?php echo fullURLfront; ?>/assets/images/sad.jpg" alt="image" style="position: relative; right: 10px;"></div></center>
             <?php }
             else {
-            echo($page);
+            //echo($page);
             $arrLength = $page*$num_per_page;
             while ($i<$arrLength && $i<$num_rows) { ?>
                 <div class="subrow" id="loop">
                     <div class="subcolumn1">
                         <div class ="adimage">
-                            <img src="<?php echo fullURLfront; ?>/assets/images/washing.jpg" alt="image1" width="180px" height="180px">
+                            <img src="data:image/jpg;base64,<?php echo base64_encode($ad[$i]->images); ?>" alt="image1" width="180px" height="180px" object-fit: fill;>
                         </div> 
                     </div>
                     <div class="subcolumn2">
